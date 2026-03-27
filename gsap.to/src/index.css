@@ -1,0 +1,24 @@
+#box,
+.green,
+.purple {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 50px;
+}
+
+/* Individual colors + positions */
+#box {
+  background: red;
+  top: 50px;
+}
+
+.green {
+  background: green;
+  top: 200px;
+}
+
+.purple {
+  background: purple;
+  top: 350px;
+}
