@@ -1,121 +1,181 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-function App() {
-  const [count, setCount] = useState(0)
+gsap.registerPlugin(ScrambleTextPlugin);
+const App = () => {
+  const textRef = useRef();
+  const text1Ref = useRef();
+  const ref = useRef();
+  const waveRef = useRef();
+  const text4Ref = useRef(null);
+  const glichyRef = useRef(null);
+  useEffect(() => {
+    gsap.to(textRef.current, {
+      duration: 2,
+      scrambleText: {
+        text: "Hello, this is GSAP Scramble!",
+        chars: "upperAndLowerCase",
+        revealDelay: 1.5,
+        speed: 1,
+      },
+      ease: "power2.out",
+    });
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    gsap.to(text1Ref.current, {
+      duration: 2,
+      delay: 4,
+      scrambleText: {
+        text: "Welcome to the world of animations!",
+        chars: "upperAndLowerCase",
+        revealDelay: 1.5,
+        speed: 1,
+      },
+      ease: "power2.out",
+    });
+    const chars4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let iteration = 0;
+    const finalText = "Hello World";
 
-      <div className="ticks"></div>
+    const interval = setInterval(() => {
+      ref.current.innerText = finalText
+        .split("")
+        .map((letter, index) => {
+          if (index < iteration) return finalText[index];
+          return chars4[Math.floor(Math.random() * chars4.length)];
+        })
+        .join("");
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      if (iteration >= finalText.length) {
+        clearInterval(interval);
+      }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      iteration += 1 / 3;
+    }, 30);
+
+    //scramble + flicker reveal(wave pattern with random flicker)
+    const text3 = "Scramble Text with Flicker Reveal!";
+    const chars2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const el = waveRef.current;
+    let frame = 0;
+
+    const flickerInterval = setInterval(() => {
+      el.innerText = text3
+        .split("")
+        .map((letter, index) => {
+          const progress = frame - index*2;
+          if (progress < 10) {
+            return text3[index];}
+
+            if(progress>0){
+              return Math.random() < 0.5 ? text3[index] : chars2[Math.floor(Math.random() * chars2.length)];
+            }
+          return chars2[Math.floor(Math.random() * chars2.length)];
+        })
+        .join("");
+
+        frame++;
+
+      if (frame >= text3.length * 3) {
+  clearInterval(flickerInterval);
 }
 
-export default App
+      frame += 1 / 4;
+    }, 40);
+// vertical rolling effect
+const finalText3 = "WELCOME";
+const chars3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const el1 = text4Ref.current;
+let frame1 = 0;
+
+const animate = () => {
+  el1.innerText = finalText3
+    .split("")
+    .map((letter, index) => {
+      const delay = index * 3;
+
+      if (frame1 > delay + 10) return finalText3[index];
+      if (frame1 > delay) return chars3[(frame1 + index) % chars3.length];
+      return " ";
+    })
+    .join("");
+
+  frame1++;
+
+  if (frame1 < finalText3.length * 5) {
+    requestAnimationFrame(animate);
+  } else {
+    gsap.fromTo(
+      text4Ref.current,
+      { opacity: 0, y: 20, filter: "blur(4px)" },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out", yoyo: true, repeat: 1 }
+    );
+  }
+};
+animate();
+
+//glichy hacker effect
+  const el2 = glichyRef.current;
+  el2.innerText = "GLITCHY HACKER EFFECT";
+  document.body.appendChild(el2);
+
+  glichyRef.current = el2;
+  
+  gsap.to(glichyRef.current, {
+    duration: 4,
+    scrambleText: {
+      text: "GLITCHY HACKER EFFECT",
+      chars: "upperAndLowerCase",
+      revealDelay: 0.5,
+      speed: 0.5,
+    },
+    repeat: -1,
+    yoyo: true,
+    ease: "power2.inOut",
+  } 
+  );
+
+  }, []);
+
+  return (
+    <div>   
+   <section>
+     <h1 className="text"ref={textRef}>
+      Loading...
+    </h1>
+   </section>
+    
+      <section>
+        <h2 className="hover" ref={text1Ref}>
+      Hover....
+    </h2>
+      </section>
+  
+  <section>
+     <h1 className="iteration" ref={ref}>
+      Another heading.
+    </h1>
+  </section>
+    
+    <section>
+      <h1 className="wave-text" ref={waveRef}>
+        Wave Pattern with Random Flicker.
+      </h1>
+    </section>
+
+    <section>
+      <h1 className="verticalRoll" ref={text4Ref}> vertica
+l rolling effect.
+      </h1>
+    </section>
+
+    <section>
+      <h1 className="glichy" ref={glichyRef}>
+        Glichy Hacker Effect.
+      </h1>
+    </section>
+    </div>
+  );
+}
+
+export default App;
